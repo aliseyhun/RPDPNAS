@@ -1,0 +1,90 @@
+<project name="evolutionRepeatedGames" default="compile" basedir=".">
+
+	<property name="build.dir" location="bin" />
+	<property name="src.dir" location="src" />
+	<property name="test.dir" location="test" />
+	<property name="build.test.dir" location="${test.dir}/bin" />
+	<property name="src.test.dir" location="${test.dir}/src" />
+	<property name="doc.dir" location="doc" />
+	<property name="dependencies.dir" location="lib" />
+	<property name="dist.dir" location="dist" />
+	<property name="reports.tests" location="${test.dir}/report/" />
+	<property environment="env" />
+	<property name="project.name" value="evolutionRepeatedGames" />
+
+
+	<path id="classpath">
+		<pathelement location="${build.dir}" />
+		<pathelement location="${build.test.dir}" />
+		<fileset dir="${dependencies.dir}">
+			<include name="*.jar" />
+		</fileset>
+	</path>
+
+	<target name="compile">
+		<javac srcdir="${src.dir}" destdir="${build.dir}" debug="true">
+			<classpath refid="classpath" />
+		</javac>
+	</target>
+
+	<target name="compile-tests" depends="compile">
+		<javac srcdir="${src.test.dir}" destdir="${build.test.dir}">
+			<classpath refid="project.classpath" />
+		</javac>
+	</target>
+
+	<target name="docs" depends="compile">
+			<mkdir dir="${doc.dir}"/>
+			<javadoc author="true"
+			destdir="${doc.dir}"
+			packagenames="*.*"
+			sourcepath="${src.dir}"
+			use="true"
+			version="true"
+			windowtitle="Evolution in repeated games"
+			private="true">
+			<classpath refid="classpath"/>
+			</javadoc>
+	</target>
+	
+	<target name="jar" depends="compile">
+			<delete file="${project.name}.jar"/>
+			<delete dir="${dist.dir}"/>
+			<mkdir dir="${dist.dir}"/>
+			<copy todir="${dist.dir}">
+				<fileset dir="${build.dir}"> <include name="**/**.class"/></fileset>
+			</copy>
+			<jar destfile="${project.name}.jar" basedir="${dist.dir}" manifest="MANIFEST.MF"> 
+		</jar>
+		</target>
+	
+	<target name="clean">
+				<delete file="${project.name}.jar"/>
+				<delete dir="${dist.dir}"/>
+				<delete dir="${doc.dir}"/>
+		<delete includeemptydirs="true">
+		    <fileset dir="${build.dir}" includes="**/*"/>
+		    <fileset dir="${build.test.dir}" includes="**/*"/>
+        </delete>
+	</target>
+	
+<target name="test">
+	<junit printsummary="yes" haltonfailure="yes">
+	  <classpath>
+	    <pathelement location="${build.dir}"/>
+	  	<pathelement location="${build.test.dir}"/>
+	  	<pathelement path="${java.class.path}"/>
+	  </classpath>
+
+	  <formatter type="html"/>
+
+	  <batchtest fork="yes" todir="${reports.tests}">
+	    <fileset dir="${src.test.dir}">
+	      <include name="**/**Test**.java"/>
+	    </fileset>
+	  </batchtest>
+	</junit>
+</target>
+		
+
+</project>

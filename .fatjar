@@ -1,0 +1,14 @@
+#Fat Jar Configuration File
+#Fri Dec 30 16:35:57 CET 2011
+onejar.license.required=false
+manifest.classpath=
+manifest.removesigners=true
+onejar.checkbox=false
+jarname=jars/RepeatedGames.jar
+manifest.mergeall=true
+manifest.mainclass=nl.vu.feweb.evolution.models.mc.respast.RepastBatch
+manifest.file=<createnew>
+jarname.isextern=false
+onejar.expand=
+excludes=<jar|junit.jar>
+includes=
